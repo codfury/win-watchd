@@ -10,13 +10,21 @@ from watchdog.events import FileSystemEventHandler
 
 file_queue = Queue()
 
-class QueueEventHandler(FileSystemEventHandler):
+class EventHandler(FileSystemEventHandler):
 	'''Watches a specific folder and raises events on_created and on_deleted'''
 
 	
+
+
 	def __init__(self) -> None:
 		super().__init__()
 		self.not_logged=True
+
+	def on_any_event(self, event):
+		super().on_any_event(event)	
+		#logging.info("New file: {}".format(event.src_path))
+		logging.info(event)
+
 
 	
 	def on_created(self, event):
@@ -25,13 +33,11 @@ class QueueEventHandler(FileSystemEventHandler):
 		:param event:
 		:return:
 		'''
-		super(QueueEventHandler, self).on_created(event)
-		if not event.is_directory and self.not_logged:
+		super().on_created(event)
+		if not event.is_directory:
 			logging.info("New file: {}".format(event.src_path))
-		elif self.not_logged:
+		else:
 			logging.info("New folder: {}".format(event.src_path))
-		
-		self.not_logged = True
 
 
 
@@ -41,12 +47,11 @@ class QueueEventHandler(FileSystemEventHandler):
 		:param event:
 		:return:
 		'''
-		super(QueueEventHandler, self).on_deleted(event)
-		if not event.is_directory and self.not_logged:
+		super().on_deleted(event)
+		if not event.is_directory:
 			logging.info("Deleted file: %s", event.src_path)
-		elif self.not_logged:
+		else:
 			logging.info("Deleted folder: %s", event.src_path)
-		self.not_logged = True
 
 	
 	def on_modified(self, event):
@@ -55,14 +60,12 @@ class QueueEventHandler(FileSystemEventHandler):
 		:param event:
 		:return:
 		'''
-		super(QueueEventHandler,self).on_modified(event)
-		if not event.is_directory and self.not_logged:
+		super().on_modified(event)
+		if not event.is_directory:
 		
 			logging.info("Modified file: %s", event.src_path)
-		elif self.not_logged:
+		else:
 			logging.info("Modified folder: %s", event.src_path)
-		
-		self.not_logged = True
 
 
 
@@ -70,8 +73,8 @@ if __name__ == "__main__":
 	logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 	#path = sys.argv[1] if len(sys.argv) > 1 else '.'
 	path = r"C:\Users\ACER\Dev\disecto\watched"
-	event_handler = QueueEventHandler()
+	event_handler = EventHandler()
 	observer = Observer()
-	observer.schedule(event_handler, path, recursive=False)
+	observer.schedule(event_handler, path, recursive=True)
 	observer.start()
 	observer.join()
