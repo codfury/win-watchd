@@ -103,10 +103,10 @@ if __name__ == "__main__":
 	#path = r"C:\Users\ACER\Dev\disecto\watched"
 	path = sys.argv[1] if len(sys.argv) > 1 else './watched'
 
-	with open(r'./logs.csv', "w") as write_obj: 
-		csv_writer = writer(write_obj)
-		csv_writer.writerow(['Timestamp','Event Type','PathLocation','Renamed']) 
-		write_obj.close()
+	# with open(r'./logs.csv', "w") as write_obj: 
+	# 	csv_writer = writer(write_obj)
+	# 	csv_writer.writerow(['Timestamp','Event Type','PathLocation','Renamed']) 
+	# 	write_obj.close()
 	
 	event_handler = EventHandler()
 	observer = Observer()
