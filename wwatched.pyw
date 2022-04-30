@@ -100,13 +100,14 @@ class EventHandler(FileSystemEventHandler):
 
 if __name__ == "__main__":
 	logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-	#path = sys.argv[1] if len(sys.argv) > 1 else '.'
+	#path = r"C:\Users\ACER\Dev\disecto\watched"
+	path = sys.argv[1] if len(sys.argv) > 1 else './watched'
 
 	with open(r'./logs.csv', "w") as write_obj: 
 		csv_writer = writer(write_obj)
 		csv_writer.writerow(['Timestamp','Event Type','PathLocation','Renamed']) 
 		write_obj.close()
-	path = r"C:\Users\ACER\Dev\disecto\watched"
+	
 	event_handler = EventHandler()
 	observer = Observer()
 	observer.schedule(event_handler, path, recursive=False)
