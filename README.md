@@ -20,7 +20,7 @@ pythonw wwatched.pyw "C:\path\to\your\folder\to\be\monitored"
 ````
 If the path isnt mentioned then it will watch the default folder <strong>watched</strong> in the repo.
 
-You can view log of the changes to the mentioned folder in logs.csv
+You can view log of the changes to the mentioned folder in logs.csv.<br>
 Then to stop the process type:
 ```
 TASKKILL /F /IM pythonw.exe
